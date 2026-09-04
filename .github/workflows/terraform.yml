@@ -33,8 +33,7 @@ jobs:
       TF_IN_AUTOMATION: "true"
       TF_INPUT: "false"
 
-      # OAuth токен больше не нужен, используем сервисный аккаунт
-      TF_VAR_yc_service_account_key: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
+      TF_VAR_yc_service_account_key_file: /tmp/key.json
       TF_VAR_yc_cloud_id: ${{ secrets.YC_CLOUD_ID }}
       TF_VAR_yc_folder_id: ${{ secrets.YC_FOLDER_ID }}
       TF_VAR_yc_zone: ${{ secrets.YC_ZONE }}
@@ -52,6 +51,22 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_wrapper: false
+
+      - name: Create service account key file
+        run: |
+          echo '${{ secrets.YC_SERVICE_ACCOUNT_KEY }}' > /tmp/key.json
+          chmod 600 /tmp/key.json
+          echo "Key file created, size: $(wc -c < /tmp/key.json) bytes"
+
+      - name: Debug service account key
+        run: |
+          echo "First 100 chars of key:"
+          head -c 100 /tmp/key.json
+          echo ""
+          echo "Total lines in key file:"
+          wc -l /tmp/key.json
+          echo "Checking if file starts with '{'"
+          head -c 1 /tmp/key.json
 
       - name: Terraform Init
         run: |
@@ -73,16 +88,6 @@ jobs:
           terraform state rm yandex_storage_bucket.kittygram
           terraform state list
 
-      - name: Debug service account key
-        run: |
-          echo "First 100 chars of key:"
-          cat /tmp/key.json | head -c 100
-          echo ""
-          echo "Total lines in key file:"
-          wc -l /tmp/key.json
-          echo "Checking if file starts with '{'"
-          head -c 1 /tmp/key.json
-
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
         run: terraform plan
@@ -98,3 +103,7 @@ jobs:
       - name: Show Terraform outputs
         if: ${{ github.event.inputs.action == 'apply' }}
         run: terraform output
+
+      - name: Clean up key file
+        if: always()
+        run: rm -f /tmp/key.json
