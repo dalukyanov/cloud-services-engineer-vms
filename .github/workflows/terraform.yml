@@ -33,7 +33,8 @@ jobs:
       TF_IN_AUTOMATION: "true"
       TF_INPUT: "false"
 
-      TF_VAR_yc_token: ${{ secrets.YC_TOKEN }}
+      # OAuth токен больше не нужен, используем сервисный аккаунт
+      TF_VAR_yc_service_account_key: ${{ secrets.YC_SERVICE_ACCOUNT_KEY }}
       TF_VAR_yc_cloud_id: ${{ secrets.YC_CLOUD_ID }}
       TF_VAR_yc_folder_id: ${{ secrets.YC_FOLDER_ID }}
       TF_VAR_yc_zone: ${{ secrets.YC_ZONE }}

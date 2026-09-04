@@ -64,3 +64,8 @@ variable "image_family" {
 variable "app_bucket_name" {
   type = string
 }
+
+variable "yc_service_account_key" {
+  description = "Yandex Cloud service account key (JSON)"
+  sensitive   = true
+}
