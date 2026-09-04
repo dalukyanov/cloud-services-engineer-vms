@@ -73,6 +73,16 @@ jobs:
           terraform state rm yandex_storage_bucket.kittygram
           terraform state list
 
+      - name: Debug service account key
+        run: |
+          echo "First 100 chars of key:"
+          cat /tmp/key.json | head -c 100
+          echo ""
+          echo "Total lines in key file:"
+          wc -l /tmp/key.json
+          echo "Checking if file starts with '{'"
+          head -c 1 /tmp/key.json
+
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
         run: terraform plan
