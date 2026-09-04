@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+sa-key.json
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+id_rsa
+id_ed25519
+github_actions_kittygram
+github_actions_kittygram.pub

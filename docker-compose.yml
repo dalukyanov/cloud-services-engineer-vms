@@ -1,0 +1,42 @@
+version: "3.8"
+
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  postgres:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    image: vladimirgentov/kittygram_backend:latest
+    env_file: .env
+    depends_on:
+      - postgres
+    volumes:
+      - static:/app/static
+      - media:/app/media
+    restart: always
+
+  frontend:
+    image: vladimirgentov/kittygram_frontend:latest
+    volumes:
+      - static:/static
+    command: sh -c "cp -r /app/build/* /static/ && tail -f /dev/null"
+
+  gateway:
+    image: vladimirgentov/kittygram_gateway:latest
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "9000:80"
+    volumes:
+      - static:/var/html/static
+      - media:/var/html/media
+    restart: always
