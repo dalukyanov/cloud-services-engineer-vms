@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    yandex = {
-      source = "yandex-cloud/yandex"
-    }
-  }
-}
-
 provider "yandex" {
   service_account_key_file = var.yc_service_account_key_file
   cloud_id                 = var.yc_cloud_id
