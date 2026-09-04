@@ -13,9 +13,7 @@ terraform {
       s3 = "https://storage.yandexcloud.net"
     }
 
-    # Значение переопределяется в GitHub Actions через backend-config.
-    # Бакет для state должен быть создан заранее, до terraform init.
-    bucket = "kittygram-tfstate-vladimirgentov"
+    bucket = "dalukyanov-tfstate"
     region = "ru-central1"
     key    = "kittygram/tf-state.tfstate"
 

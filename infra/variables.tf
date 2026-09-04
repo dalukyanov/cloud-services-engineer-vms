@@ -1,7 +1,7 @@
-variable "yc_token" {
-  type      = string
-  sensitive = true
-}
+#variable "yc_token" {
+#  type      = string
+#  sensitive = true
+#}
 
 variable "yc_cloud_id" {
   type = string
@@ -65,7 +65,13 @@ variable "app_bucket_name" {
   type = string
 }
 
-variable "yc_service_account_key" {
-  description = "Yandex Cloud service account key (JSON)"
-  sensitive   = true
+#variable "yc_service_account_key" {
+#  description = "Yandex Cloud service account key (JSON)"
+#  sensitive   = true
+#}
+
+variable "yc_service_account_key_file" {
+  description = "Path to service account key file"
+  type        = string
+  default     = "/tmp/key.json"
 }
