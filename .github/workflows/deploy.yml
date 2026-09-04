@@ -1,4 +1,4 @@
-name: Kittygram CI/CD
+name: Kittygram Deployment
 
 on:
   push:
